@@ -1,13 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import Overlay from "./components/Overlay";
+
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [showOverlay, setShowOverlay] = useState(true); // Initially show overlay
+
+  const closeOverlay = () => {
+    setShowOverlay(false);
+  };
+
+  useEffect(() => {
+    if (showOverlay) {
+      const timer = setTimeout(() => {
+        closeOverlay(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showOverlay]);
 
   return (
     <>
+      {showOverlay && <Overlay/>}
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

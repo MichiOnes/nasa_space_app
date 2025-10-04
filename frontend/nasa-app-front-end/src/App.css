@@ -5,6 +5,30 @@
   text-align: center;
 }
 
+.lilita-one-regular {
+  font-family: "Lilita One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+:root {
+  --verde-claro: #1FE10A;
+  --verde-oscuro: #098013;
+  --negro: #000;
+  --naranja: #E3A224;
+  --blanco: #fff;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  margin: 0;                     /* Elimina el margen por defecto */
+  background: radial-gradient(circle, var(--verde-claro), var(--verde-oscuro));     /* Color de fondo */
+  color: white;                  /* Color de texto para visibilidad */
+  font-family: "Lilita One", sans-serif;
+  height: 100vh;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
