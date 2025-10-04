@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Clima y Quiz</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #quiz { margin-top: 20px; }
+    .question { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Consulta de clima y quiz</h1>
+
+  <div>
+    <label>Latitud: <input type="number" id="lat" value="40.4168"></label>
+    <label>Longitud: <input type="number" id="lon" value="-3.7038"></label>
+    <button onclick="getData()">Consultar</button>
+  </div>
+
+  <h3 id="climate"></h3>
+
+  <div id="quiz"></div>
+
+  <script>
+    async function getData() {
+      const lat = parseFloat(document.getElementById('lat').value);
+      const lon = parseFloat(document.getElementById('lon').value);
+
+      // Primero pide el clima
+      const climateRes = await fetch("/api/climate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lat, lon })
+      });
+      const climateData = await climateRes.json();
+      document.getElementById("climate").innerText =
+        `Clima detectado: ${climateData.climate}`;
+
+      // Luego pide el quiz adaptado a ese clima
+      const quizRes = await fetch("/api/quiz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lat, lon })
+      });
+      const quizData = await quizRes.json();
+
+      // Muestra las preguntas
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = ""; // limpiar
+
+      quizData.quiz.forEach(q => {
+        const qElem = document.createElement("div");
+        qElem.classList.add("question");
+
+        let html = `<h4>${q.text}</h4>`;
+        for (const [letter, text] of Object.entries(q.options)) {
+          html += `<label><input type="radio" name="${q.qid}"> ${letter}) ${text}</label><br>`;
+        }
+
+        qElem.innerHTML = html;
+        quizDiv.appendChild(qElem);
+      });
+    }
+  </script>
+</body>
+</html>
