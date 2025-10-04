@@ -1,66 +1,103 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
 .lilita-one-regular {
   font-family: "Lilita One", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
+
 :root {
+  padding: none;
   --verde-claro: #1FE10A;
   --verde-oscuro: #098013;
   --negro: #000;
   --naranja: #E3A224;
   --blanco: #fff;
+  --gris-claro: #D9D9D9;
 }
 
 body {
   display: flex;
   justify-content: center;
-  margin: 0;                     /* Elimina el margen por defecto */
-  background: radial-gradient(circle, var(--verde-claro), var(--verde-oscuro));     /* Color de fondo */
-  color: white;                  /* Color de texto para visibilidad */
+  margin: 0;                     /* Elimina el margen por defecto /     / Color de fondo */
+  color: var(--negro);                  /* Color de texto para visibilidad */
   font-family: "Lilita One", sans-serif;
   height: 100vh;
+  overflow: hidden;
+  touch-action: none;
+  padding: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.carga{
+  height: 100vh;
+  width: 100vw;
+  background: radial-gradient(circle, var(--verde-claro), var(--verde-oscuro));
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.inicio{
+  position: relative;
+  height: 100vh;
+  width: 100vw; 
+  background: radial-gradient(circle, var(--blanco), var(--gris-claro));
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.grid {
+  position: absolute;
+  top: 20;
+  left: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  mix-blend-mode: multiply;
+  pointer-events: none;
 }
 
-.card {
-  padding: 2em;
+.cabra {
+  position: absolute;
+  z-index: 99;
+  height: min(50vw, 80vh);
+  bottom: 0;
+  left: 4vw;
 }
 
-.read-the-docs {
-  color: #888;
+.bocadillo {
+  position: absolute;
+  z-index: 80;
+  height: 40vw;
+  top: -5%;
+  left: 17%;
+  scale: 0.7;
+  filter: drop-shadow( 4px 8px 10px rgba(0, 0, 0, 0.3));
+}
+
+.texto {
+  position: relative;
+  z-index: 85;
+  left: 33vw;
+  top: 4.5vw;
+  height: 15vw;
+  filter: drop-shadow( 4px 8px 10px rgba(0, 0, 0, 0.3));
+  font-size: 2.5vw;
+  filter: none;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.mainButton{
+  background-color: var(--naranja);
+  position: relative;
+  border: none;
+  color: white;
+  font-family: "Lilita One", sans-serif;
+  font-size: 2.5vw;
+  border-radius: 1vw;
+  z-index: 85;
+  top: 7vw;
+  left: 75vw;
+  margin: 0;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  padding-top: 0.5vw;
+  padding-bottom: 0.5vw;
 }
