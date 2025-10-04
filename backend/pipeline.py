@@ -9,10 +9,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 
+PATH = './data/final_data.npz'
 
-
-data_path = 'C:/Users/juanj/OneDrive/Documentos/GitHub/nasa_space_app/backend/data/final_data.npz'
-data = np.load(data_path)
+data = np.load(PATH)
 
 
 # Define Antarctic cutoff

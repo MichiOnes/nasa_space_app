@@ -3,8 +3,9 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 import pandas as pd
 
+PATH = './data/final_data.npz'
 
-data = np.load('C:/Users/juanj/OneDrive/Documentos/GitHub/nasa_space_app/backend/data/final_data.npz')
+data = np.load(PATH)
 
 # Define Antarctic cutoff
 antarctic_cutoff = -60  # degrees latitude
