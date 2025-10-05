@@ -73,7 +73,6 @@ function Principal() {
           tipo_ingles &&
           tamno_granja_ingles
       )
-      .slice(0, 2)
     : null;
 
   console.log("Preguntas filtradas por tipo y tamaño:", preguntasFiltradas);
