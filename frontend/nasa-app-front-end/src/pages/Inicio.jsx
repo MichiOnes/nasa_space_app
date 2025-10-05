@@ -172,7 +172,7 @@ function Inicio() {
             <div className='master'>
               <img src={bocadillo} className='bocadillo'></img>
               <p className='texto'>What a nice place to farm! <br />
-                Plase, tell me more!<br />
+                Please, tell me more!<br />
                 Which definition fits better to you?</p>
               <div className='buttonWrapper'> 
                 <button className='mainButton tamaño' onClick={pequeño}>I'm a local farmer, small scale business.</button>
