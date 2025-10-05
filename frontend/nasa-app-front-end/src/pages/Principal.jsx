@@ -73,6 +73,7 @@ function Principal() {
           tipo_ingles &&
           tamno_granja_ingles
       )
+      .slice(0,2)
     : null;
 
   console.log("Preguntas filtradas por tipo y tamaño:", preguntasFiltradas);
@@ -91,13 +92,15 @@ function Principal() {
       setRespuestaCorrecta(preguntas ? preguntas[numeroPregunta + 1].answer : null);
     }
     else{
-        alert ("Quiz completed! Returning to home.");
-        navigate("/", { replace: true });
+        setEstado(4)
     }
       // Por ejemplo, podrías reiniciar el cuestionario o mostrar un mensaje de finalización
       // setNumeroPregunta(0); // Reinicia al principio
       // setRespuestaCorrecta(preguntas ? preguntas[0].answer : null);
   };
+
+  const [numRespuestaCorrectas, setNumRespuestaCorrectas] = useState(0)
+  const [numRespuestaIncorrectas, setNumRespuestaIncorrectas] = useState(0)
 
   const [estado, setEstado] = useState(0);
   const [visible1, setVisible1] = useState(true);
@@ -133,6 +136,7 @@ function Principal() {
             setVisible3(true);
             setVisible4(true);
             setColor("radial-gradient(ellipse 50% 30% at 50% 70%, var(--gris-oscuro), var(--negro))")
+            setNumRespuestaCorrectas(numRespuestaCorrectas + 1);
             aumentarPregunta();
           }, 3000);
         }, 2000);
@@ -151,6 +155,7 @@ function Principal() {
               setVisible3(true);
               setVisible4(true);
               setColor("radial-gradient(ellipse 50% 30% at 50% 70%, var(--gris-oscuro), var(--negro))")
+              setNumRespuestaIncorrectas(numRespuestaIncorrectas + 1);
               if (numeroPregunta < preguntas.length - 1) {
                 aumentarPregunta();
               } else{
@@ -163,7 +168,6 @@ function Principal() {
       }
     }, 1000);
   }
-
 
   const seleccionado1 = () => {
     respuestaSelec = "A"
@@ -229,9 +233,12 @@ function Principal() {
     setEstado(0);
     setCultivo(fases[0]);
     if (utlimaPreguntaIncorrecta){
-        alert ("Quiz completed! Returning to home.");
-        navigate("/", { replace: true });
+        setEstado(4);
     }
+  }
+
+  const volver_a_inicio = () => {
+    navigate("/", { replace: true });
   }
 
   const irAPlot = () => {
@@ -362,7 +369,30 @@ function Principal() {
         )}
       </div>
     </div>
-  )
-}
+    )
+  }
+  if (estado == 4){
+    return (
+      <div className="principal">
+        <img src={fondo} className='fondo'></img>
+        <img src={cabraNormal} className='cabra Normal'></img>
+        <img src={sueloCabra} className='suelo'></img>
+        <div className='masterII'>
+          <img src={bocadillo} className='bocadilloII'></img>
+          <p className='textoII'>Great job! <br />
+            Feel free to play again!<br />
+            Thank you!</p>
+          <div className='optionWrapper'>
+            <p className='textoFinal'>
+              You answered right {numRespuestaCorrectas} out of {preguntasFiltradas.length} questions! <br />
+              You answered wrong {numRespuestaIncorrectas} out of {preguntasFiltradas.length} questions! <br />
+            </p>
+          </div>
+          <button className='mainButtonFinal' onClick={volver_a_inicio}>Go To Inicial Page</button>
+          <img src={cultivo} className='cultivo'></img>
+        </div>
+      </div>
+    );
+    }
 }
 export default Principal;

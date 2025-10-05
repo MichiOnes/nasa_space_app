@@ -511,3 +511,38 @@ canvas{
   line-height: 1.4;
   width:60vw;
 }
+
+.textoFinal {
+  background-color: var(--naranja);
+  border-radius: 15px;
+  position: relative;
+  text-align: center;
+  color: white;
+  padding: 10px;
+  z-index: 85;
+  left: 4vw;
+  top: 3vw;
+  width: 37vw;
+  font-size: 2.5vw;
+  filter: none;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.mainButtonFinal{
+  background-color: var(--naranja);
+  position: relative;
+  border: none;
+  color: white;
+  font-family: "Lilita One", sans-serif;
+  font-size: 2.5vw;
+  border-radius: 1vw;
+  z-index: 85;
+  top: 17vw;
+  left: 65vw;
+  margin: 0;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  padding-top: 0.5vw;
+  padding-bottom: 0.5vw;
+}
