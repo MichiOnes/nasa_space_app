@@ -1,0 +1,70 @@
+.app-root {
+    display: flex;
+    position: absolute;
+    gap: 16px;
+    height: 100vh;
+    background: rgba(0,0,0,0);
+    color: #e6eef8;
+    padding: 12px;
+    box-sizing: border-box;
+    z-index: 9999;
+}
+
+.globe-wrap {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+aside.sidebar {
+    width: 320px;
+    background: rgba(10, 18, 30, 0.6);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+    overflow: auto;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.marker-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+}
+
+.marker-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.coords {
+    font-size: 12px;
+    color: #a9c0db;
+}
+
+.marker-actions button {
+    margin-left: 6px;
+    background: transparent;
+    color: #e6eef8;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.marker-actions button:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.hint {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #cbdff8;
+}
