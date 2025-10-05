@@ -42,19 +42,6 @@ def data_at_location(data, category, lat_target, lon_target, monthly_mean=False,
         time_index : np.array of months or bin start years
     """
 
-    # Load lat/lon/time
-
-    # data = {
-    #     'lat': np.array([40.0, 41.0]),
-    #     'lon': np.array([-3.0, -4.0]),
-    #     'time': np.arange(120),  # 10 años de datos mensuales
-    #     'precipitation': np.random.rand(120, 2, 2) * 100,
-    #     'soil_moisture': np.random.rand(120, 2, 2),
-    #     'temperature': np.random.rand(120, 2, 2) * 30,
-    #     'evaporation': np.random.rand(120, 2, 2) * 50,
-    #     'frost_days': np.random.randint(0, 10, (120, 2, 2))
-    # }
-
     lat = data['lat']
     lon = data['lon']
     time_len = len(data['time'])
@@ -139,34 +126,78 @@ def provide_feedback_plot(lat, lon, data, fb_vars):
     months = np.arange(1, 13)
     fig, ax1 = plt.subplots(figsize=(12, 4))
     
-    primary_vars = ['precipitation', 'evaporation', 'soil_moisture']
-    secondary_vars = ['temperature', 'frost_days']
-    
+    var_ct = 1
+
     ax2_created = False
     for var in fb_vars:
         var = var.strip()  # remove extra spaces
         values, _ = data_at_location(data, var, lat, lon, monthly_mean=True, year_range=(2014,2024))
-        if var in primary_vars:
-            ax1.plot(months, values, '-o', label=var.replace('_',' ').title())
-        elif var in secondary_vars:
-            if not ax2_created:
-                ax2 = ax1.twinx()
-                ax2_created = True
-            ax2.plot(months, values, '-s', label=var.replace('_',' ').title())
+        if var_ct == 1:
+            if var == 'precipitation':
+                ax1.plot(months, values, '-o', label=var.replace('_',' ').title())
+                ax1.set_xlabel('Month')
+                ax1.set_xticks(months)
+                ax1.set_ylabel('mm of water. Precipitation')
+                var_ct += 1
+                
+            if var == 'evaporation':
+                ax1.plot(months, values, '-o', label=var.replace('_',' ').title())
+                ax1.set_xlabel('Month')
+                ax1.set_xticks(months)
+                ax1.set_ylabel('mm of water. Evotranspiration')
+                var_ct += 1
     
-    ax1.set_xlabel('Month')
-    ax1.set_xticks(months)
-    ax1.set_ylabel('Primary variables')
-    if ax2_created:
-        ax2.set_ylabel('Secondary variables')
+            if var == 'soil_moisture':
+                ax1.plot(months, values, '-o', label=var.replace('_',' ').title())
+                ax1.set_xlabel('Month')
+                ax1.set_xticks(months)
+                ax1.set_ylabel('mm of water. Soil moisture')
+                var_ct += 1
+    
+            if var == 'temperature':
+                ax1.plot(months, values, '-o', label=var.replace('_',' ').title())
+                ax1.set_xlabel('Month')
+                ax1.set_xticks(months)
+                ax1.set_ylabel('ºC')
+                var_ct += 1
+    
+            if var == 'frost_days':
+                ax1.plot(months, values, '-o', label=var.replace('_',' ').title())
+                ax1.set_xlabel('Month')
+                ax1.set_xticks(months)
+                ax1.set_ylabel('Mean number of frost days')
+                var_ct += 1
+        else:
+            ax2 = ax1.twinx()
+            ax2_created = True
+            
+            if var == 'precipitation':
+                ax2.plot(months, values, '-o', color = 'red', label=var.replace('_',' ').title())
+                ax2.set_ylabel('mm of water. Precipitation')
+                
+            if var == 'evaporation':
+                ax2.plot(months, values, '-o', color = 'red', label=var.replace('_',' ').title())
+                ax2.set_ylabel('mm of water. Evotranspiration')
+    
+            if var == 'soil_moisture':
+                ax2.plot(months, values, '-o', color = 'red', label=var.replace('_',' ').title())
+                ax2.set_ylabel('mm of water. Soil moisture')
+    
+            if var == 'temperature':
+                ax2.plot(months, values, '-o', color = 'red', label=var.replace('_',' ').title())
+                ax2.set_ylabel('ºC')
+    
+            if var == 'frost_days':
+                ax2.plot(months, values, '-o', color = 'red', label=var.replace('_',' ').title())
+                ax2.set_ylabel('Mean number of frost days')
     
     # Combine legends
     lines, labels = ax1.get_legend_handles_labels()
     if ax2_created:
         lines2, labels2 = ax2.get_legend_handles_labels()
-        ax1.legend(lines + lines2, labels + labels2, loc='upper right')
+        ax1.legend(lines + lines2, labels + labels2, loc='best')
     else:
-        ax1.legend(lines, labels, loc='upper right')
+        ax1.legend(lines, labels, loc='best')
     
     plt.title(f'Climate Data at lat={lat}, lon={lon} (2014-2024)')
     
@@ -205,23 +236,35 @@ def generate_feedback(user_json, data):
 
     
     climate = get_climate_at_location(lat, lon)
+
+    fb_vars_clean = []
     
+    for var in fb_vars:
+        if var == ' soil_moisture' or var == 'soil_moisture':
+            fb_vars_clean.append('soil moisture')
+        elif var == 'frost_days':
+            fb_vars_clean.append('number of frost days')
+        else:
+            fb_vars_clean.append(var)
+
     if selected == correct:
         message = f"✅ Correct! The climate at this location is {climate}.\n"
         message += f"Your selected practice:\n{user_text}\n"
     else:
-        message = f"❌ Your selected practice may be suboptimal for this location.\n"
-        message += f"Detected climate: {climate}\n"
-        message += f"Your choice:\n{user_text}\n"
-        message += f"Correct choice:\n{correct_text}\n"
+        
+        message_list = []
+        
+        message_list.append(f"❌ Your selected practice may be suboptimal for this location.\n")
+        message_list.append(f"Detected climate: {climate}\n")
+        message_list.append(f"Your choice:\n{user_text}\n")
+        message_list.append(f"Correct choice:\n{correct_text}\n")
+        message_list.append(f"On the next screen, you will see a plot of the averaged monthly evolution from the last 10 years of the {fb_vars_clean[0]} and the {fb_vars_clean[1]} at your location that will help you understand why your choice was not the correct one.")
     
     # Generate plot as base64
     img_base64 = provide_feedback_plot(lat, lon, data, fb_vars)
     
-
-    
     # JSON - Frontend
     return {
-        "message": message,
+        "message": message_list,
         "plot_base64": img_base64
     }

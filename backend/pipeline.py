@@ -381,6 +381,54 @@ E) Controlled structures. (Arctic)
 F) Mulch, minimum tillage, optimized irrigation. (Temperate)
 fb) soil_moisture, precipitation
     
+Category: Tomato – Small-Scale / Household
+
+Q1: In your region, which water management strategy is most suitable for your small tomato plot?
+A) Manual watering and mulch. (Continental)
+B) Small drip system and reflective covers. (Desert)
+C) Raised beds and drainage channels. (Tropical)
+D) Capture rainwater and irrigate in furrows. (Arid)
+E) Pots or mini-greenhouses. (Arctic)
+F) Water during cooler hours and add compost. (Temperate)
+fb) precipitation, soil_moisture
+
+
+Q2: In your region, which fertilization strategy is most suitable for your small tomato plot?
+A) Homemade compost. (Continental)
+B) Small, timed doses of organic fertilizer. (Desert)
+C) Mix biofertilizers and compost. (Tropical)
+D) Slow-release fertilizer with organic matter. (Arid)
+E) Foliar nutrients and compost in pots/raised beds. (Arctic)
+F) Rotate with legumes and add compost manually. (Temperate)
+fb) soil_moisture, evaporation
+
+Q3: In your region, which practice best prevents soil erosion in your small tomato plot?
+A) Manual no-till with vegetative barriers. (Continental)
+B) Cover soil and small fences. (Desert)
+C) Intercrop and mulch. (Tropical)
+D) Hand-made terraces and furrows. (Arid)
+E) Raised beds or mini-greenhouses. (Arctic)
+F) Mulch and minimum tillage. (Temperate)
+fb) soil_moisture, evaporation
+
+Q4: In your region, which approach helps your small tomato plot adapt to climate variability?
+A) Adjust planting dates and resilient varieties. (Continental)
+B) DIY irrigation and drought-tolerant varieties. (Desert)
+C) Polyculture and diverse varieties. (Tropical)
+D) Mulch and drought-tolerant crops. (Arid)
+E) Protect plants in small greenhouses or raised beds. (Arctic)
+F) Adapted varieties and manual irrigation/fertilization. (Temperate)
+fb) precipitation, temperature
+
+Q5: In your region, which method increases productivity sustainably in your small tomato plot?
+A) Rotate crops and apply compost manually. (Continental)
+B) Measure soil moisture and apply targeted fertilizer. (Desert)
+C) Compost, biofertilizers, hand-managed pest control. (Tropical)
+D) Efficient watering and small furrows. (Arid)
+E) Pots, raised beds, mini-greenhouses with nutrients. (Arctic)
+F) Minimum tillage, mulch, manual irrigation. (Temperate)
+fb) soil_moisture, precipitation
+    
 Category: Wheat – Industrial Scale
 
 Q1: In your region, which water management strategy is most suitable for wheat?
@@ -466,54 +514,6 @@ E) Protect plants in small greenhouses or raised beds. (Arctic)
 F) Adapted varieties and manual irrigation/fertilization. (Temperate)
 fb) frost_days, heat_days
 
-
-Q5: In your region, which method increases productivity sustainably in your small wheat plot?
-A) Rotate crops and apply compost manually. (Continental)
-B) Measure soil moisture and apply targeted fertilizer. (Desert)
-C) Compost, biofertilizers, hand-managed pest control. (Tropical)
-D) Efficient watering and small furrows. (Arid)
-E) Pots, raised beds, mini-greenhouses with nutrients. (Arctic)
-F) Minimum tillage, mulch, manual irrigation. (Temperate)
-fb) soil_moisture, temperature
-
-Category: Wheat – Small-Scale / Household
-
-Q1: In your region, which water management strategy is most suitable for your small wheat plot?
-A) Water manually and apply mulch. (Continental)
-B) Set up a small drip system to conserve water. (Desert)
-C) Build mini raised beds and drainage channels. (Tropical)
-D) Capture rainwater and irrigate in furrows. (Arid)
-E) Grow in pots or mini-greenhouses to extend the season. (Arctic)
-F) Water during cooler hours and add compost. (Temperate)
-fb) precipitation, soil_moisture
-
-Q2: In your region, which fertilization strategy is most suitable for your small wheat plot?
-A) Apply homemade compost and kitchen scraps. (Continental)
-B) Apply small, timed doses of organic fertilizer. (Desert)
-C) Mix biofertilizers and compost. (Tropical)
-D) Apply slow-release fertilizer with organic matter. (Arid)
-E) Provide foliar nutrients and compost in pots or raised beds. (Arctic)
-F) Rotate with legumes and add compost manually. (Temperate)
-fb) temperature, precipitation
-
-Q3: In your region, which practice best prevents soil erosion in your small wheat plot?
-A) Manual no-till with vegetative barriers. (Continental)
-B) Cover soil and use small fences to reduce wind erosion. (Desert)
-C) Intercrop and apply mulch. (Tropical)
-D) Hand-made terraces and furrows. (Arid)
-E) Plant in raised beds or mini-greenhouses. (Arctic)
-F) Apply mulch and minimal tillage. (Temperate)
-fb) wind, soil_moisture
-
-Q4: In your region, which approach helps your small wheat plot adapt to climate variability?
-A) Adjust planting dates and resilient varieties. (Continental)
-B) DIY irrigation and drought-tolerant varieties. (Desert)
-C) Polyculture and diverse varieties. (Tropical)
-D) Mulch and drought-tolerant crops. (Arid)
-E) Protect plants in small greenhouses or raised beds. (Arctic)
-F) Adapted varieties and manual irrigation/fertilization. (Temperate)
-fb) frost_days, heat_days
-
 Q5: In your region, which method increases productivity sustainably in your small wheat plot?
 A) Rotate crops and apply compost manually. (Continental)
 B) Measure soil moisture and apply targeted fertilizer. (Desert)
@@ -523,6 +523,7 @@ E) Pots, raised beds, mini-greenhouses with nutrients. (Arctic)
 F) Minimum tillage, mulch, manual irrigation. (Temperate)
 fb) soil_moisture, temperature
 """
+
 import re
 import random
 import json

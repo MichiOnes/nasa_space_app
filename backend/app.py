@@ -78,13 +78,16 @@ def api_quiz():
 # -------------------------------
 # RUTA 4: API to generate results/feedback
 # -------------------------------
+
+PATH = './data/final_data.npz'
+data = np.load(PATH)
+
 @app.post("/api/feedback")
 def api_feedback():
     payload = request.get_json(force=True) or {}
 
     # Ajusta los nombres según lo que envíe tu frontend
     user_input = payload.get("user_input")     # p.ej. respuestas del usuario
-    data = payload.get("data")                 # p.ej. metadatos, claves, etc.
 
     if user_input is None:
         return jsonify({"error": "Missing user_input"})
