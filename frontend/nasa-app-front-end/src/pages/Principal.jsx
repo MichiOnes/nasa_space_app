@@ -30,6 +30,8 @@ const API_URL = `${DIRECTION}/api`;
 
 function Principal() {
 
+  let plot_base64;
+
   const { datosQuiz, updateDatosQuiz } = useDatosQuizContext();
   const navigate = useNavigate();
 
@@ -40,6 +42,8 @@ function Principal() {
   const [tipo, setTipo] = useState(datosQuiz ? datosQuiz.tipo : null);
 
   const [tamano, setTamano] = useState(datosQuiz ? datosQuiz.tamano : null);
+
+  const [plotSrc, setPlotSrc] = useState(null);
 
   let fases = []
   let tipo_ingles = ""
@@ -69,6 +73,7 @@ function Principal() {
           tipo_ingles &&
           tamno_granja_ingles
       )
+      .slice(0, 2)
     : null;
 
   console.log("Preguntas filtradas por tipo y tamaño:", preguntasFiltradas);
@@ -79,20 +84,27 @@ function Principal() {
 
   const [respuestaCorrecta, setRespuestaCorrecta] = useState(datosQuiz ? preguntas[numeroPregunta].answer : null);
 
+  const [utlimaPreguntaIncorrecta, setUtlimaPreguntaIncorrecta] = useState(false);
+
+  useEffect(() => {
+  if (utlimaPreguntaIncorrecta) {
+    alert ("Quiz completed! Returning to home.");
+    navigate("/", { replace: true });
+  }
+}, [utlimaPreguntaIncorrecta, navigate]);
+
   const aumentarPregunta = () => {
     if (numeroPregunta < preguntas.length - 1) {
       setNumeroPregunta(numeroPregunta + 1);
       setRespuestaCorrecta(preguntas ? preguntas[numeroPregunta + 1].answer : null);
-    } else {
-      // Aquí puedes manejar lo que sucede cuando se terminan las preguntas
-      console.log("Has completado todas las preguntas.");
-      alert ("Quiz completed! Returning to home.");
-      navigate("/", { replace: true });
-      console.log("Has completado todas las preguntas.");
+    }
+    else{
+        alert ("Quiz completed! Returning to home.");
+        navigate("/", { replace: true });
+    }
       // Por ejemplo, podrías reiniciar el cuestionario o mostrar un mensaje de finalización
       // setNumeroPregunta(0); // Reinicia al principio
       // setRespuestaCorrecta(preguntas ? preguntas[0].answer : null);
-    }
   };
 
   const [estado, setEstado] = useState(0);
@@ -129,6 +141,9 @@ function Principal() {
             setVisible3(true);
             setVisible4(true);
             setColor("radial-gradient(ellipse 50% 30% at 50% 70%, var(--gris-oscuro), var(--negro))")
+            // if (numeroPregunta + 1 === preguntas.length ){
+            //     setUtlimaPreguntaIncorrecta(true)
+            // }
             aumentarPregunta();
           }, 3000);
         }, 2000);
@@ -220,6 +235,13 @@ function Principal() {
   const volver = () => {
     setEstado(0);
     setCultivo(fases[0]);
+    // if (numeroPregunta + 1 === preguntas.length){
+    //     setUtlimaPreguntaIncorrecta(true)
+    // }
+  }
+
+  const irAPlot = () => {
+    setEstado(3);
   }
   
   const respuesta_incorrecta = async () => {
@@ -235,18 +257,6 @@ function Principal() {
         fb: preguntas[numeroPregunta].fb,
         latitude: datosQuiz.lat,
         longitude: datosQuiz.lon
-      },
-      data:{
-        lat: [40.0, 41.0],
-        lon: [-3.0, -4.0],
-        time: [120],
-        category: {
-        precipitation: [120],
-        soil_moisture: [120],
-        temperature: [120],
-        evaporation: [120],
-        frost_days: [120]
-      }
       }
     };
 
@@ -255,6 +265,19 @@ function Principal() {
       console.log('Datos enviados al clima:', datos);
       console.log('Respuesta del clima:', response.data);
       setRespuestaFeedback(response.data)
+
+      // Si tu backend devuelve { plot_base64, format }, usa el formato; si no, asume PNG
+      plot_base64 = response.data.plot_base64;
+
+      // Construye el src para <img>
+      if (plot_base64) {
+        setPlotSrc(`data:/image/png;base64,${plot_base64}`);
+      } else {
+        setPlotSrc(null);
+      }
+
+      console.log("Estado plotSrc", plotSrc)
+
     } catch (error) {
         console.error('Error al enviar los datos:', error);
     }
@@ -294,11 +317,58 @@ function Principal() {
         <img src={cabraTriste} className='cabra Triste'></img>
         <div className='masterFail'>
           <img src={bocadilloGrande} className='bocadilloFail'></img>
-          <p className='textoFail'> {respuestaFeedback ? respuestaFeedback.message : "Cargando..."}</p>
-          <button className='mainButtonFail' onClick={volver}>Next</button>
+          <p className='textoFail'>
+            {respuestaFeedback && Array.isArray(respuestaFeedback.message)
+              ? respuestaFeedback.message.map((linea, idx) => (
+                  <React.Fragment key={idx}>
+                    {linea}
+                    <br />
+                  </React.Fragment>
+                ))
+              : (respuestaFeedback ? respuestaFeedback.message : "Cargando...")}
+          </p>
+          <button className='mainButtonFail' onClick={irAPlot}>Next</button>
         </div>
       </div>
     )
   }
+  if (estado == 3){
+  return (
+    <div className="inicio">
+      <img src={grid} className='grid' />
+      <img src={cabraTriste} className='cabra Triste' />
+      <div className='masterFail_2'>
+        <img src={bocadilloGrande} className='bocadilloFail_2' />
+        {plotSrc ? (
+          <div>
+            <img
+              src={plotSrc}
+              alt="Gráfico generado"
+              className='grafico'
+            />
+            <div className='buttonWrapper_Fail'>
+            <button className="secondButton_failIII"
+              onClick={() => {
+                if (!plotSrc) return;
+                const link = document.createElement('a');
+                link.href = plotSrc;           // data URL o blob URL
+                link.download = 'grafico.png';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            }}
+            > 
+              Descargar gráfico
+            </button>
+            <button className='mainButton_failIII' onClick={volver}>Next</button>
+            </div>
+          </div>
+        ) : (
+          <p className='textoFail_2'>Generando gráfico…</p>
+        )}
+      </div>
+    </div>
+  )
+}
 }
 export default Principal;

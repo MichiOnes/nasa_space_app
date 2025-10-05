@@ -127,7 +127,8 @@ body {
   position: absolute;
   z-index: 80;
   height: 90%;
-  scale: 1.1;
+  top: -2vw;
+  transform: scaleY(1) scaleX(1.1);
   filter: drop-shadow( 4px 8px 10px rgba(0, 0, 0, 0.3));
 }
 
@@ -218,10 +219,11 @@ body {
   left: 4vw;
   top: 0vw;
   height: 15vw;
-  font-size: 2.5vw;
+  font-size: 2vw;
   filter: none;
   margin: 0;
   line-height: 1.4;
+  width:60vw;
 }
 
 
@@ -292,7 +294,7 @@ body {
   font-size: 2.5vw;
   border-radius: 1vw;
   z-index: 85;
-  top: 20vw;
+  top: 17vw;
   left: 55vw;
   margin: 0;
   padding-left: 3vw;
@@ -351,6 +353,48 @@ canvas{
   flex-direction: row;
 }
 
+.buttonWrapper_Fail {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 31vw;
+  z-index: 90;
+  left: 10vw;
+}
+
+.mainButton_failIII{
+  background-color: var(--naranja);
+  position: static;
+  border: none;
+  color: white;
+  font-family: "Lilita One", sans-serif;
+  font-size: 2.5vw;
+  border-radius: 1vw;
+  margin-left: 10vw;
+  margin: 0;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  padding-top: 0.5vw;
+  padding-bottom: 0.5vw;
+}
+
+.secondButton_failIII{
+  border: 2px var(--naranja) solid;
+  position: static;
+  background: none;
+  color: var(--naranja);
+  font-family: "Lilita One", sans-serif;
+  font-size: 2vw;
+  border-radius: 1vw;
+  margin: 0;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  padding-top: 0.5vw;
+  padding-bottom: 0.5vw;
+  width: 25vw;
+  margin-right: 17vw;
+}
+
 .fondo {
   position: absolute;
   top: 0;
@@ -401,4 +445,69 @@ canvas{
   padding-right: 3vw;
   padding-top: 0.5vw;
   padding-bottom: 0.5vw;
+}
+
+.plot {
+  max-width: 80vw;
+  max-height: 50vh;
+  border-radius: 12px;
+  display: block;
+}
+
+.masterFail_2{
+  position: absolute;
+  height: 45vw;
+  top: 12%;
+  left: 27%;
+}
+
+
+.bocadilloFail_2 {
+  position: absolute;
+  z-index: 80;
+  height: 90%;
+  top: -2vw;
+  transform: scaleY(1) scaleX(1.1);
+  filter: drop-shadow( 4px 8px 10px rgba(0, 0, 0, 0.3));
+}
+
+.grafico {
+  max-width: 80vw; 
+  max-height: 50vh; 
+  border-radius: 12px;
+  position: absolute;
+  right: -67vw;
+  z-index: 90;
+}
+
+
+.mainButtonFail_2{
+  background-color: var(--naranja);
+  position: relative;
+  border: none;
+  color: white;
+  font-family: "Lilita One", sans-serif;
+  font-size: 2.5vw;
+  border-radius: 1vw;
+  z-index: 85;
+  top: 17vw;
+  left: 55vw;
+  margin: 0;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  padding-top: 0.5vw;
+  padding-bottom: 0.5vw;
+}
+
+.textoFail_2 {
+  position: relative;
+  z-index: 85;
+  left: 4vw;
+  top: 0vw;
+  height: 15vw;
+  font-size: 2vw;
+  filter: none;
+  margin: 0;
+  line-height: 1.4;
+  width:60vw;
 }

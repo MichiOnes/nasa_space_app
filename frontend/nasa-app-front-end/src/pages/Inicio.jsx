@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 
 const API_URL = `${DIRECTION}/api`;
 
+const ANTARTIC_CUT_OFF = -60
+
 function Inicio() {
 
   const navigate = useNavigate();
@@ -85,6 +87,13 @@ function Inicio() {
       tamano: tamaño,
       tipo: tipo
     };
+
+    if (datos.lat < ANTARTIC_CUT_OFF){
+        alert("The selected location is in the Antartic region. Please, select a different location.");
+        setEstado(1);
+        return;
+    }
+
     try {
       const response = await axios.post(`${API_URL}/climate`, datos);
       console.log('Datos enviados al clima:', datos);
@@ -93,6 +102,11 @@ function Inicio() {
       // Aquí puedes manejar la respuesta del servidor si es necesario
       if (response_climate.climate == "Ocean") {
         alert("The selected location has an oceanic climate. Please, select a different location.");
+        setEstado(1);
+        return;
+      }
+      if (response_climate.climate == "Frozen water"){
+        alert("The selected location is a mass of Fronzen Water. Please, select a different location.");
         setEstado(1);
         return;
       }
