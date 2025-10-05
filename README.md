@@ -17,3 +17,6 @@ To run frontend:
 - Install npm
 - Run inside the frontend folder: frontend nasa-app-front-end -> `npm install`
 - Run -> `npm run dev`
+
+## Demo Video
+https://youtu.be/6hga4PWPRfg
