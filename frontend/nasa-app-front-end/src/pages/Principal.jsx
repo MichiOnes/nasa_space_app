@@ -35,7 +35,7 @@ function Principal() {
   const { datosQuiz, updateDatosQuiz } = useDatosQuizContext();
   const navigate = useNavigate();
 
-  const [respuestaSeleccionada, setRespuestaSeleccionada] = useState(null)
+  let respuestaSelec;
   
   const [respuestaFeedback, setRespuestaFeedback] = useState(null)
 
@@ -85,13 +85,6 @@ function Principal() {
 
   const [utlimaPreguntaIncorrecta, setUtlimaPreguntaIncorrecta] = useState(false);
 
-  useEffect(() => {
-  if (utlimaPreguntaIncorrecta) {
-    alert ("Quiz completed! Returning to home.");
-    navigate("/", { replace: true });
-  }
-}, [utlimaPreguntaIncorrecta, navigate]);
-
   const aumentarPregunta = () => {
     if (numeroPregunta < preguntas.length - 1) {
       setNumeroPregunta(numeroPregunta + 1);
@@ -140,9 +133,6 @@ function Principal() {
             setVisible3(true);
             setVisible4(true);
             setColor("radial-gradient(ellipse 50% 30% at 50% 70%, var(--gris-oscuro), var(--negro))")
-            // if (numeroPregunta + 1 === preguntas.length ){
-            //     setUtlimaPreguntaIncorrecta(true)
-            // }
             aumentarPregunta();
           }, 3000);
         }, 2000);
@@ -161,7 +151,11 @@ function Principal() {
               setVisible3(true);
               setVisible4(true);
               setColor("radial-gradient(ellipse 50% 30% at 50% 70%, var(--gris-oscuro), var(--negro))")
-              aumentarPregunta();
+              if (numeroPregunta < preguntas.length - 1) {
+                aumentarPregunta();
+              } else{
+                setUtlimaPreguntaIncorrecta(true)
+              }
             }, 3000);
           }, 400);
         }, 1000);
@@ -172,7 +166,7 @@ function Principal() {
 
 
   const seleccionado1 = () => {
-    setRespuestaSeleccionada("A")
+    respuestaSelec = "A"
     setVisible2(false);
     setVisible3(false);
     setVisible4(false);
@@ -187,7 +181,7 @@ function Principal() {
   }
 
   const seleccionado2 = () => {
-    setRespuestaSeleccionada("B")
+    respuestaSelec = "B"
     setVisible1(false);
     setVisible3(false);
     setVisible4(false);
@@ -202,7 +196,7 @@ function Principal() {
   }
 
   const seleccionado3 = () => {
-    setRespuestaSeleccionada("C")
+    respuestaSelec = "C"
     setVisible2(false);
     setVisible1(false);
     setVisible4(false);
@@ -217,7 +211,7 @@ function Principal() {
   }
 
   const seleccionado4 = () => {
-    setRespuestaSeleccionada("D")
+    respuestaSelec = "D"
     setVisible2(false);
     setVisible3(false);
     setVisible1(false);
@@ -234,9 +228,10 @@ function Principal() {
   const volver = () => {
     setEstado(0);
     setCultivo(fases[0]);
-    // if (numeroPregunta + 1 === preguntas.length){
-    //     setUtlimaPreguntaIncorrecta(true)
-    // }
+    if (utlimaPreguntaIncorrecta){
+        alert ("Quiz completed! Returning to home.");
+        navigate("/", { replace: true });
+    }
   }
 
   const irAPlot = () => {
@@ -251,7 +246,7 @@ function Principal() {
         qid: preguntas[numeroPregunta].qid,
         text: preguntas[numeroPregunta].text,
         options: preguntas[numeroPregunta].options,
-        selected_answer: respuestaSeleccionada,
+        selected_answer: respuestaSelec,
         correct_answer: respuestaCorrecta,
         fb: preguntas[numeroPregunta].fb,
         latitude: datosQuiz.lat,
@@ -290,12 +285,12 @@ function Principal() {
         <img src={sueloCabra} className='suelo'></img>
         <div className='masterII'>
           <img src={bocadillo} className='bocadilloII'></img>
-          <p className='textoII'>{preguntas ? preguntas[numeroPregunta].text : "Cargando..."}</p>
+          <p className='textoII'>{preguntas ? preguntas[numeroPregunta].text : "Loading..."}</p>
           <div className='optionWrapper'>
-            <button className='optionButton' style={{ visibility: visible1 ? 'visible' : 'hidden' }} onClick={seleccionado1}>{preguntas ? preguntas[numeroPregunta].options.A : "Cargando..."}</button>
-            <button className='optionButton' style={{ visibility: visible2 ? 'visible' : 'hidden' }} onClick={seleccionado2}>{preguntas ? preguntas[numeroPregunta].options.B : "Cargando..."}</button>
-            <button className='optionButton' style={{ visibility: visible3 ? 'visible' : 'hidden' }} onClick={seleccionado3}>{preguntas ? preguntas[numeroPregunta].options.C : "Cargando..."}</button>
-            <button className='optionButton' style={{ visibility: visible4 ? 'visible' : 'hidden' }} onClick={seleccionado4}>{preguntas ? preguntas[numeroPregunta].options.D : "Cargando..."}</button>
+            <button className='optionButton' style={{ visibility: visible1 ? 'visible' : 'hidden' }} onClick={seleccionado1}>{preguntas ? preguntas[numeroPregunta].options.A : "Loading..."}</button>
+            <button className='optionButton' style={{ visibility: visible2 ? 'visible' : 'hidden' }} onClick={seleccionado2}>{preguntas ? preguntas[numeroPregunta].options.B : "Loading..."}</button>
+            <button className='optionButton' style={{ visibility: visible3 ? 'visible' : 'hidden' }} onClick={seleccionado3}>{preguntas ? preguntas[numeroPregunta].options.C : "Loading..."}</button>
+            <button className='optionButton' style={{ visibility: visible4 ? 'visible' : 'hidden' }} onClick={seleccionado4}>{preguntas ? preguntas[numeroPregunta].options.D : "Loading..."}</button>
           </div>
           <img src={cultivo} className='cultivo'></img>
         </div>
@@ -324,7 +319,7 @@ function Principal() {
                     <br />
                   </React.Fragment>
                 ))
-              : (respuestaFeedback ? respuestaFeedback.message : "Cargando...")}
+              : (respuestaFeedback ? respuestaFeedback.message : "Loading...")}
           </p>
           <button className='mainButtonFail' onClick={irAPlot}>Next</button>
         </div>
@@ -357,7 +352,7 @@ function Principal() {
                 link.remove();
             }}
             > 
-              Descargar gráfico
+              Download Plot
             </button>
             <button className='mainButton_failIII' onClick={volver}>Next</button>
             </div>

@@ -193,7 +193,7 @@ function Inicio() {
               <p className='texto'>Ok, that's nice! <br />
                 Lastly, what crop do you farm?</p>
               <div className='buttonWrapper horizontal'> 
-                <button className='mainButton tamaño' onClick={tomate}>Fruits</button>
+                <button className='mainButton tamaño' onClick={tomate}>Tomatoes</button>
                 <button className='mainButton tamaño' onClick={maiz}>Corn</button>
                 <button className='mainButton tamaño' onClick={trigo}>Wheat</button>
               </div>
