@@ -34,10 +34,12 @@ def index():
 @app.post("/api/climate")
 def api_climate():
     data = request.get_json(force=True) or {}
+    print ("Received data:", data)  # Debugging line
     lat = data.get("lat")
     lon = data.get("lon")
 
     if lat is None or lon is None:
+        
         return jsonify({"error": "Missing lat or lon"}), 400
 
     climate = get_climate_at_location(lat, lon)

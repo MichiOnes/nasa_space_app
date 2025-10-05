@@ -43,6 +43,18 @@ def data_at_location(data, category, lat_target, lon_target, monthly_mean=False,
     """
 
     # Load lat/lon/time
+
+    # data = {
+    #     'lat': np.array([40.0, 41.0]),
+    #     'lon': np.array([-3.0, -4.0]),
+    #     'time': np.arange(120),  # 10 años de datos mensuales
+    #     'precipitation': np.random.rand(120, 2, 2) * 100,
+    #     'soil_moisture': np.random.rand(120, 2, 2),
+    #     'temperature': np.random.rand(120, 2, 2) * 30,
+    #     'evaporation': np.random.rand(120, 2, 2) * 50,
+    #     'frost_days': np.random.randint(0, 10, (120, 2, 2))
+    # }
+
     lat = data['lat']
     lon = data['lon']
     time_len = len(data['time'])
