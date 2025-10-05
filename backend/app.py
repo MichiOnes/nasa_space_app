@@ -18,6 +18,7 @@ app = Flask(__name__, static_folder="static", static_url_path="/static")
 CORS(app)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
+#HOST = os.getenv("HOST", "10.236.250.35")
 HOST = os.getenv("HOST", "localhost")
 PORT = os.getenv("PORT", 5000)
 

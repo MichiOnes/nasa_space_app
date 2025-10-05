@@ -231,8 +231,8 @@ def generate_feedback(user_json, data):
     fb_vars = user_json['fb']
     selected = user_json['selected_answer']
     correct = user_json['correct_answer']
-    user_text = user_json['options'].get(selected, "Your choice")
-    correct_text = user_json['options'].get(correct, "Correct choice")
+    user_text = user_json['options'].get(selected)
+    correct_text = user_json['options'].get(correct)
 
     
     climate = get_climate_at_location(lat, lon)
