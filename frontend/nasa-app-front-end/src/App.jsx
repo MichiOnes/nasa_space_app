@@ -3,6 +3,7 @@ import Overlay from "./components/Overlay";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Principal from "./pages/Principal.jsx";
 import Inicio from './pages/Inicio.jsx';
+import DatosQuizProvider from './context/constextInicioPrincipal'
 
 import './App.css'
 
@@ -62,13 +63,13 @@ function App() {
   const shouldShowOverlay = showOverlay && location.pathname === "/";
 
   return (
-    <>
+    <DatosQuizProvider>
       {shouldShowOverlay && <Overlay/>}
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Inicio />} />
-        <Route path="/Principal" element={<Principal />} />
+        <Route path="/principal" element={<Principal />} />
       </Routes>
-    </>
+    </DatosQuizProvider>
   )
 }
 

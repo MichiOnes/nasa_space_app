@@ -18,13 +18,82 @@ import bocadillo from "../assets/svgs/bocadilloIII.svg";
 import bocadilloGrande from "../assets/svgs/bocadilloGrandeII.svg";
 import sueloCabra from "../assets/svgs/sueloCabra.svg";
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState} from 'react';
 
+import { useNavigate } from "react-router-dom";
 
+import { useDatosQuizContext } from "../context/constextInicioPrincipal.jsx";
+
+import axios from 'axios';
+import { DIRECTION } from '../constants/constants'
+const API_URL = `${DIRECTION}/api`;
 
 function Principal() {
 
-  const [tipo, setTipo] = useState("maiz");
+  const { datosQuiz, updateDatosQuiz } = useDatosQuizContext();
+  const navigate = useNavigate();
+
+  const [respuestaSeleccionada, setRespuestaSeleccionada] = useState(null)
+  
+  const [respuestaFeedback, setRespuestaFeedback] = useState(null)
+
+  const [tipo, setTipo] = useState(datosQuiz ? datosQuiz.tipo : null);
+
+  const [tamano, setTamano] = useState(datosQuiz ? datosQuiz.tamano : null);
+
+  let fases = []
+  let tipo_ingles = ""
+  let tamno_granja_ingles = ""
+
+  if (tipo == "tomate") {
+    fases = [tomatesBuenos, tomatesMedios, tomatesPochos];
+    tipo_ingles = "Tomato"
+  } else if (tipo == "trigo") {
+    fases = [trigoBueno, trigoMedio, trigoPocho];
+    tipo_ingles = "Wheat"
+  } else{
+    fases = [maizBueno, maizMedio, maizPocho];
+    tipo_ingles = "Corn"
+  }
+
+  if (tamano == "pequeño") {
+    tamno_granja_ingles = "Small-Scale / Household"
+  } else {
+    tamno_granja_ingles = "Industrial Scale"
+  }
+  const preguntasFiltradas = datosQuiz
+    ? datosQuiz.quiz.filter(
+        (q) =>
+          q.category.includes(tipo_ingles) &&
+          q.category.includes(tamno_granja_ingles) &&
+          tipo_ingles &&
+          tamno_granja_ingles
+      )
+    : null;
+
+  console.log("Preguntas filtradas por tipo y tamaño:", preguntasFiltradas);
+
+  const [preguntas, setPreguntas] = useState(preguntasFiltradas);
+
+  const [numeroPregunta, setNumeroPregunta] = useState(0);
+
+  const [respuestaCorrecta, setRespuestaCorrecta] = useState(datosQuiz ? preguntas[numeroPregunta].answer : null);
+
+  const aumentarPregunta = () => {
+    if (numeroPregunta < preguntas.length - 1) {
+      setNumeroPregunta(numeroPregunta + 1);
+      setRespuestaCorrecta(preguntas ? preguntas[numeroPregunta + 1].answer : null);
+    } else {
+      // Aquí puedes manejar lo que sucede cuando se terminan las preguntas
+      console.log("Has completado todas las preguntas.");
+      alert ("Quiz completed! Returning to home.");
+      navigate("/", { replace: true });
+      console.log("Has completado todas las preguntas.");
+      // Por ejemplo, podrías reiniciar el cuestionario o mostrar un mensaje de finalización
+      // setNumeroPregunta(0); // Reinicia al principio
+      // setRespuestaCorrecta(preguntas ? preguntas[0].answer : null);
+    }
+  };
 
   const [estado, setEstado] = useState(0);
   const [visible1, setVisible1] = useState(true);
@@ -32,22 +101,16 @@ function Principal() {
   const [visible3, setVisible3] = useState(true);
   const [visible4, setVisible4] = useState(true);
 
-
-
   const [color, setColor] = useState("radial-gradient(ellipse 50% 30% at 50% 70%, var(--gris-oscuro), var(--negro))");
-  
-  const [respuestaCorrecta, setRespuestaCorrecta] = useState(1);
-  const [acierto,setAcierto] = useState(false);
 
-  let fases = []
+  const [acierto, setAcierto] = useState(false);
 
-  if (tipo == "tomate") {
-    fases = [tomatesBuenos, tomatesMedios, tomatesPochos];
-  } else if (tipo == "trigo") {
-    fases = [trigoBueno, trigoMedio, trigoPocho];
-  } else{
-    fases = [maizBueno, maizMedio, maizPocho];
-  }
+   // Redirige a "/" si no hay datosQuiz (por ejemplo, al recargar)
+  useEffect(() => {
+    if (!datosQuiz) {
+      navigate("/", { replace: true });
+    }
+  }, [datosQuiz, navigate]);
 
   const [cultivo, setCultivo] = useState(fases[0]);
 
@@ -66,6 +129,7 @@ function Principal() {
             setVisible3(true);
             setVisible4(true);
             setColor("radial-gradient(ellipse 50% 30% at 50% 70%, var(--gris-oscuro), var(--negro))")
+            aumentarPregunta();
           }, 3000);
         }, 2000);
       } else{
@@ -76,81 +140,124 @@ function Principal() {
           const timer = setTimeout(() => {
             setCultivo(fases[2]);
             const timer = setTimeout(() => {
-              setEstado(2);
+              respuesta_incorrecta();
+              setEstado(2)
               setVisible1(true);
               setVisible2(true);
               setVisible3(true);
               setVisible4(true);
               setColor("radial-gradient(ellipse 50% 30% at 50% 70%, var(--gris-oscuro), var(--negro))")
+              aumentarPregunta();
             }, 3000);
           }, 400);
         }, 1000);
       }, 2000);
       }
-      
     }, 1000);
   }
 
 
   const seleccionado1 = () => {
+    setRespuestaSeleccionada("A")
     setVisible2(false);
     setVisible3(false);
     setVisible4(false);
 
-    if (respuestaCorrecta == 1){
+    if (respuestaCorrecta == "A"){
       setAcierto(true);
     } else {
       setAcierto(false);
     }
 
-    animarCambio(1);
+    animarCambio("A");
   }
 
   const seleccionado2 = () => {
+    setRespuestaSeleccionada("B")
     setVisible1(false);
     setVisible3(false);
     setVisible4(false);
 
-    if (respuestaCorrecta == 2){
+    if (respuestaCorrecta == "B"){
       setAcierto(true);
     } else {
       setAcierto(false);
     }
 
-    animarCambio(2);
+    animarCambio("B");
   }
 
   const seleccionado3 = () => {
+    setRespuestaSeleccionada("C")
     setVisible2(false);
     setVisible1(false);
     setVisible4(false);
 
-    if (respuestaCorrecta == 3){
+    if (respuestaCorrecta == "C"){
       setAcierto(true);
     } else {
       setAcierto(false);
     }
 
-    animarCambio(3);
+    animarCambio("C");
   }
 
   const seleccionado4 = () => {
+    setRespuestaSeleccionada("D")
     setVisible2(false);
     setVisible3(false);
     setVisible1(false);
 
-    if (respuestaCorrecta == 4){
+    if (respuestaCorrecta == "D"){
       setAcierto(true);
     } else {
       setAcierto(false);
     }
 
-    animarCambio(4);
+    animarCambio("D");
   }
 
   const volver = () => {
     setEstado(0);
     setCultivo(fases[0]);
+  }
+  
+  const respuesta_incorrecta = async () => {
+    
+    const datos = {
+      user_input: {
+        category: `${tipo_ingles} – ${tamno_granja_ingles}`,
+        qid: preguntas[numeroPregunta].qid,
+        text: preguntas[numeroPregunta].text,
+        options: preguntas[numeroPregunta].options,
+        selected_answer: respuestaSeleccionada,
+        correct_answer: respuestaCorrecta,
+        fb: preguntas[numeroPregunta].fb,
+        latitude: datosQuiz.lat,
+        longitude: datosQuiz.lon
+      },
+      data:{
+        lat: [40.0, 41.0],
+        lon: [-3.0, -4.0],
+        time: [120],
+        category: {
+        precipitation: [120],
+        soil_moisture: [120],
+        temperature: [120],
+        evaporation: [120],
+        frost_days: [120]
+      }
+      }
+    };
+
+    try {
+      const response = await axios.post(`${API_URL}/feedback`, datos);
+      console.log('Datos enviados al clima:', datos);
+      console.log('Respuesta del clima:', response.data);
+      setRespuestaFeedback(response.data)
+    } catch (error) {
+        console.error('Error al enviar los datos:', error);
+    }
   }
   
   if (estado == 0){
@@ -161,14 +268,12 @@ function Principal() {
         <img src={sueloCabra} className='suelo'></img>
         <div className='masterII'>
           <img src={bocadillo} className='bocadilloII'></img>
-          <p className='textoII'>Hello, nice to meet you! I’m Croppy! <br />
-            I will help you to optimise your crops!<br />
-            Let’s personalize your terrain! Beee!</p>
+          <p className='textoII'>{preguntas ? preguntas[numeroPregunta].text : "Cargando..."}</p>
           <div className='optionWrapper'>
-            <button className='optionButton' style={{ visibility: visible1 ? 'visible' : 'hidden' }} onClick={seleccionado1}>Opción 1</button>
-            <button className='optionButton' style={{ visibility: visible2 ? 'visible' : 'hidden' }} onClick={seleccionado2}>Opción 2</button>
-            <button className='optionButton' style={{ visibility: visible3 ? 'visible' : 'hidden' }} onClick={seleccionado3}>Opción 3</button>
-            <button className='optionButton' style={{ visibility: visible4 ? 'visible' : 'hidden' }} onClick={seleccionado4}>Opción 4</button>
+            <button className='optionButton' style={{ visibility: visible1 ? 'visible' : 'hidden' }} onClick={seleccionado1}>{preguntas ? preguntas[numeroPregunta].options.A : "Cargando..."}</button>
+            <button className='optionButton' style={{ visibility: visible2 ? 'visible' : 'hidden' }} onClick={seleccionado2}>{preguntas ? preguntas[numeroPregunta].options.B : "Cargando..."}</button>
+            <button className='optionButton' style={{ visibility: visible3 ? 'visible' : 'hidden' }} onClick={seleccionado3}>{preguntas ? preguntas[numeroPregunta].options.C : "Cargando..."}</button>
+            <button className='optionButton' style={{ visibility: visible4 ? 'visible' : 'hidden' }} onClick={seleccionado4}>{preguntas ? preguntas[numeroPregunta].options.D : "Cargando..."}</button>
           </div>
           <img src={cultivo} className='cultivo'></img>
         </div>
@@ -189,9 +294,7 @@ function Principal() {
         <img src={cabraTriste} className='cabra Triste'></img>
         <div className='masterFail'>
           <img src={bocadilloGrande} className='bocadilloFail'></img>
-          <p className='textoFail'>Hello, nice to meet you! I’m Croppy! <br />
-            I will help you to optimise your crops!<br />
-            Let’s personalize your terrain! Beee!</p>
+          <p className='textoFail'> {respuestaFeedback ? respuestaFeedback.message : "Cargando..."}</p>
           <button className='mainButtonFail' onClick={volver}>Next</button>
         </div>
       </div>
