@@ -7,7 +7,7 @@ In order to run the program, run in the backend folder:
 - `pip install requirements.txt` -> install dependencies
 - `pyhton3 app.py` -> run backend
 
-## Dataset:
+## Dataset
 https://drive.google.com/file/d/1O3pB4mgjIJdDdVqtJf_HOGEuyyPyS8aU/view?usp=sharing
 
 **ONE MAY CHANGE THE PATHS IN THE PYTHON FILES TO MATCH THE LOCATION OF THE DATASET. CHANGE THEM AT USER.PY AND PIPELINE.PY**
